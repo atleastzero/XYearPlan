@@ -1,0 +1,8 @@
+<!-- templates/courses_new.html -->
+
+{% extends 'base.html' %} {% block content %}
+<form method='POST' action='/courses/{{course._id}}'>
+    <input type='hidden' name='_method' value='PUT' /> {% include 'partials/courses_form.html' %}
+    <button type='submit'>Save Playlist</button>
+</form>
+{% endblock %}

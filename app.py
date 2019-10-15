@@ -26,10 +26,13 @@ def courses_new():
 def courses_submit():
     """Submit a new course."""
     course = {
-
+        'subject': request.form.get("course_subject"),
+        'code': request.form.get("course_code"),
+        'title': request.form.get("course_title"),
+        'description': request.form.get("course_description")
     }
-    courses.insert_one(course).inserted_id
-    return redirect(url_for("courses_show"))
+    course_id = courses.insert_one(course).inserted_id
+    return redirect(url_for('courses_show', course_id = course_id))
     
 @app.route("/courses/<course_id>")
 def courses_show(course_id):
@@ -41,6 +44,10 @@ def courses_show(course_id):
 def courses_update(course_id):
     """Submit an edited course."""
     updated_course = {
+        'subject': request.form.get("course_subject"),
+        'code': request.form.get("course_code"),
+        'title': request.form.get("course_title"),
+        'description': request.form.get("course_description")
     }
     courses.update_one(
         {'_id': ObjectId(course_id)},
