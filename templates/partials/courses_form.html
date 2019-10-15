@@ -1,0 +1,25 @@
+<!-- templates/courses/courses_form.html -->
+
+<fieldset>
+    <legend>{{title}}</legend>
+    <p>
+        <label for="course_subject">Subject</label><br>
+        <input type="text" name="course_subject" id="course_subject" value='{{course_subject}}' />
+    </p>
+    <p>
+        <label for="course_code">Code</label><br>
+        <input type="number" name="course_code" id="course_code" value="{{course_code}}" />
+    </p>
+    <p>
+        <label for="course_title">Title</label><br>
+        <input type="text" name="course_title" id="course_title" value="{{course_title}}" />
+    </p>
+    <p>
+        <label for="course_description">Description</label>
+        <textarea name="course_description" id="course_description">{{course_description}}</textarea>
+    </p>
+</fieldset>
+
+<p>
+    <button type="submit">Save Course</button>
+</p>

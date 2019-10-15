@@ -1,0 +1,7 @@
+<!-- templates/courses_new.html -->
+
+{% extends 'base.html' %} {% block content %}
+<form action="POST" action="/courses">
+    {% include 'partials/course_form.html' %}
+</form>
+{% endblock %}

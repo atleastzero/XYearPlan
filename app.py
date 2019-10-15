@@ -20,7 +20,7 @@ def courses_index():
 @app.route("/courses/new")
 def courses_new():
     """Create a new course."""
-    return render_template("courses_new.html", course = courses.find())
+    return render_template("courses_new.html", course = {}, title = 'New Course')
 
 @app.route("/courses", methods=["POST"])
 def courses_submit():
