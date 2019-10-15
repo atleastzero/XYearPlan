@@ -4,5 +4,5 @@
 <h1>Courses</h1>
 
 <a href='/courses/new'>Add New Course</a> {% for course in courses %}
-<a href='/playlists/{{ playlist._id }}'>{{ course.subject }} {{ course.code }}: {{ course.title }} </a></h2>
+<a href='/courses/{{ course._id }}'>{{ course.subject }} {{ course.code }}: {{ course.title }} </a></h2>
 {% endfor %} {% endblock %}

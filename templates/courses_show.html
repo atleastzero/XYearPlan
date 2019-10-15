@@ -3,4 +3,11 @@
 <a href="/">View all courses</a>
 <h1>{{course.subject}} {{course.code}}: {{course.title}}</h1>
 <p>{{course.description}}</p>
+<p><a href='/courses/{{ course._id }}/edit'>Edit Course</a></p>
+<p>
+    <form method='POST' action='/playlists/{{ playlist._id }}/delete'>
+        <input type='hidden' name='_method' value='DELETE'>
+        <button type='submit'>Delete Course</button>
+    </form>
+</p>
 {% endblock %}
