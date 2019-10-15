@@ -1,0 +1,6 @@
+<!-- templates/courses_show.html -->
+{% extends 'base.html' %} {% block content %}
+<a href="/">View all courses</a>
+<h1>{{course.subject}} {{course.code}}: {{course.title}}</h1>
+<p>{{course.description}}</p>
+{% endblock %}
