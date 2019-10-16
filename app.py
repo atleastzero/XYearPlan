@@ -16,7 +16,9 @@ terms = db.terms
 @app.route("/")
 def courses_index():
     """Show all courses."""
-    return render_template('terms_index.html', courses = courses.find(), terms = terms.find())
+    return render_template('terms_index.html', courses = 
+                courses.find().sort({"subject":1, "code":1}), 
+                terms = terms.find().sort({"start_date":1, "end_date":1}))
 
 @app.route("/terms/courses/new")
 def courses_new():
@@ -107,6 +109,12 @@ def terms_edit(term_id):
     """Show the edit form for a term."""
     term = terms.find_one({'_id': ObjectId(term_id)})
     return render_template("terms_edit.html", term = term)
+
+@app.route('/terms/<term_id>/delete', methods=['POST'])
+def terms_delete(term_id):
+    """Delete one term."""
+    terms.delete_one({'_id': ObjectId(term_id)})
+    return redirect(url_for('courses_index'))
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=os.environ.get('PORT', 5000))
