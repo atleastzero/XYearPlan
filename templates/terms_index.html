@@ -4,7 +4,7 @@
 <h1>Courses</h1>
 
 <ul>
-    <li><a href='/courses/new'>Add New Course</a></li>
+    <li><a href='/terms/courses/new'>Add New Course</a></li>
     <li><a href='/terms/new'>Add New Term</a></li>
 </ul>
 
@@ -12,7 +12,7 @@
 <ul>
     {% for course in courses %}
     <li>
-        <a href='/courses/{{ course._id }}'><strong>{{ course.subject }} {{ course.code }}</strong>: {{ course.title }} </a></h2>
+        <a href='/terms/courses/{{ course._id }}'><strong>{{ course.subject }} {{ course.code }}</strong>: {{ course.title }} </a></h2>
     </li>
     {% endfor %}
 </ul>

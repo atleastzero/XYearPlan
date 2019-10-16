@@ -16,14 +16,14 @@ terms = db.terms
 @app.route("/")
 def courses_index():
     """Show all courses."""
-    return render_template('courses_index.html', courses = courses.find())
+    return render_template('terms_index.html', courses = courses.find())
 
-@app.route("/courses/new")
+@app.route("/terms/courses/new")
 def courses_new():
     """Create a new course."""
     return render_template("courses_new.html", course = {}, title = 'New Course')
 
-@app.route("/courses", methods=["POST"])
+@app.route("/terms/courses", methods=["POST"])
 def courses_submit():
     """Submit a new course."""
     course = {
@@ -35,7 +35,7 @@ def courses_submit():
     course_id = courses.insert_one(course).inserted_id
     return redirect(url_for('courses_show', course_id = course_id))
     
-@app.route("/courses/<course_id>")
+@app.route("/terms/courses/<course_id>")
 def courses_show(course_id):
     """Show a single course."""
     course = courses.find_one({'_id': ObjectId(course_id)})
@@ -55,13 +55,13 @@ def courses_update(course_id):
         {'$set': updated_course})
     return redirect(url_for('courses_show', course_id = course_id))
 
-@app.route("/courses/<course_id>/edit")
+@app.route("/terms/courses/<course_id>/edit")
 def courses_edit(course_id):
     """Show the edit form for a course."""
     course = courses.find_one({'_id': ObjectId(course_id)})
     return render_template("courses_edit.html", course = course)
 
-@app.route('/courses/<course_id>/delete', methods=['POST'])
+@app.route('/terms/courses/<course_id>/delete', methods=['POST'])
 def courses_delete(course_id):
     """Delete one course."""
     courses.delete_one({'_id': ObjectId(course_id)})
@@ -77,11 +77,11 @@ def terms_submit():
     """Submit a new term."""
     term = {
         'name': request.form.get("term_name"),
-        'startdate': datetime.strptime(request.form.get("start_date"), '%Y-%m-%d'),
-        'enddate': datetime.strptime(request.form.get("end_date"), '%Y-%m-%d')
+        'start_date': datetime.strptime(request.form.get("start_date"), '%Y-%m-%d'),
+        'end_date': datetime.strptime(request.form.get("end_date"), '%Y-%m-%d')
     }
     term_id = terms.insert_one(term).inserted_id
-    return redirect(url_for('terms_show', term_id = term_id))
+    return redirect(url_for('terms_index', term_id = term_id))
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=os.environ.get('PORT', 5000))
