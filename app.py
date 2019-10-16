@@ -16,7 +16,7 @@ terms = db.terms
 @app.route("/")
 def courses_index():
     """Show all courses."""
-    return render_template('terms_index.html', courses = courses.find())
+    return render_template('terms_index.html', courses = courses.find(), terms = terms.find())
 
 @app.route("/terms/courses/new")
 def courses_new():
@@ -81,7 +81,13 @@ def terms_submit():
         'end_date': datetime.strptime(request.form.get("end_date"), '%Y-%m-%d')
     }
     term_id = terms.insert_one(term).inserted_id
-    return redirect(url_for('terms_index', term_id = term_id))
+    return redirect(url_for('terms_show', term_id = term_id))
+
+@app.route("/terms/<term_id>")
+def terms_show(term_id):
+    """Show a single term."""
+    term = terms.find_one({'_id': ObjectId(term_id)})
+    return render_template('terms_show.html', term = term)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=os.environ.get('PORT', 5000))

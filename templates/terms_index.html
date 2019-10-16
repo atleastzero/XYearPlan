@@ -16,4 +16,7 @@
     </li>
     {% endfor %}
 </ul>
-{% endblock %}
+
+{% for term in terms %}
+<h2><a href='/terms/{{ term._id }}'>{{term.name}}</a></h2>
+{% endfor %} {% endblock %}
