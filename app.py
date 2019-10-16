@@ -11,11 +11,12 @@ host = os.environ.get('MONGODB_URI', 'mongodb://localhost:27017/XYearPlan')
 client = MongoClient(host=f'{host}?retryWrites=false')
 db = client.get_default_database()
 courses = db.courses
+terms = db.terms
 
 @app.route("/")
 def courses_index():
     """Show all courses."""
-    return render_template('courses_index.html', course = courses.find())
+    return render_template('courses_index.html', courses = courses.find())
 
 @app.route("/courses/new")
 def courses_new():
@@ -65,6 +66,22 @@ def courses_delete(course_id):
     """Delete one course."""
     courses.delete_one({'_id': ObjectId(course_id)})
     return redirect(url_for('courses_index'))
+
+@app.route("/terms/new")
+def terms_new():
+    """Create a new term."""
+    return render_template("terms_new.html", term = {}, title = 'New Term')
+
+@app.route("/terms", methods=["POST"])
+def terms_submit():
+    """Submit a new term."""
+    term = {
+        'name': request.form.get("term_name"),
+        'startdate': datetime.strptime(request.form.get("start_date"), '%Y-%m-%d'),
+        'enddate': datetime.strptime(request.form.get("end_date"), '%Y-%m-%d')
+    }
+    term_id = terms.insert_one(term).inserted_id
+    return redirect(url_for('terms_show', term_id = term_id))
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=os.environ.get('PORT', 5000))

@@ -3,6 +3,17 @@
 {% extends 'base.html' %} {% block content %}
 <h1>Courses</h1>
 
-<a href='/courses/new'>Add New Course</a> {% for course in courses %}
-<a href='/courses/{{ course._id }}'>{{ course.subject }} {{ course.code }}: {{ course.title }} </a></h2>
-{% endfor %} {% endblock %}
+<ul>
+    <li><a href='/courses/new'>Add New Course</a></li>
+    <li><a href='/terms/new'>Add New Term</a></li>
+</ul>
+
+<h2>Unassigned Courses</h2>
+<ul>
+    {% for course in courses %}
+    <li>
+        <a href='/courses/{{ course._id }}'><strong>{{ course.subject }} {{ course.code }}</strong>: {{ course.title }} </a></h2>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
