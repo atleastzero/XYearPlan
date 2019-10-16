@@ -2,7 +2,7 @@
 
 {% extends 'base.html' %} {% block content %}
 <form method='POST' action='/terms/courses/{{course._id}}'>
-    <input type='hidden' name='_method' value='PUT' /> {% include 'partials/courses_form.html' %}
+    <input type='hidden' name='_method' value='PUT' /> {% include 'partials/course_form.html' %}
     <button type='submit'>Save Course</button>
 </form>
 {% endblock %}

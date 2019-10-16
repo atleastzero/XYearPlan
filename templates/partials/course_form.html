@@ -1,7 +1,7 @@
 <!-- templates/course_form.html -->
 
 <fieldset>
-    <legend>{{title}}</legend>
+    <legend>{{ title }}</legend>
     <p>
         <label for="course_subject">Subject</label><br>
         <input type="text" name="course_subject" id="course_subject" value='{{course.subject}}' />
@@ -17,5 +17,18 @@
     <p>
         <label for="course_description">Description</label>
         <textarea name="course_description" id="course_description">{{course.description}}</textarea>
+    </p>
+    <p>
+        <label for="course_credits">Credits</label>
+        <input type="number" name="course_credits" id="course_credits" value="{{course.credits}}" />
+    </p>
+    <p>
+        <label for="course_term">Term</label>
+        <select name="course_term" id="course_term">
+            <option value="Unassigned">Unassigned</option>
+            {% for term in terms %}
+                <option value="{{ term.name }}">{{ term.name }}</option>
+            {% endfor %}
+        </select>
     </p>
 </fieldset>

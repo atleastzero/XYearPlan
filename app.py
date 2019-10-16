@@ -16,23 +16,26 @@ terms = db.terms
 @app.route("/")
 def courses_index():
     """Show all courses."""
-    return render_template('terms_index.html', courses = 
-                courses.find().sort({"subject":1, "code":1}), 
-                terms = terms.find().sort({"start_date":1, "end_date":1}))
+    return render_template('terms_index.html', 
+                courses = courses.find().sort([("subject", 1), ("code", 1)]), 
+                terms = terms.find().sort([("start_date", 1), ("end_date", 1)]))
 
 @app.route("/terms/courses/new")
 def courses_new():
     """Create a new course."""
-    return render_template("courses_new.html", course = {}, title = 'New Course')
+    return render_template("courses_new.html", course = {}, title = 'New Course',
+                terms = terms.find().sort([("start_date", 1), ("end_date", 1)]))
 
 @app.route("/terms/courses", methods=["POST"])
 def courses_submit():
     """Submit a new course."""
-    course = {
+    course = { 
         'subject': request.form.get("course_subject"),
         'code': request.form.get("course_code"),
         'title': request.form.get("course_title"),
-        'description': request.form.get("course_description")
+        'description': request.form.get("course_description"), 
+        'credits': request.form.get("course_credits"),
+        'term': request.form.get("course_term")
     }
     course_id = courses.insert_one(course).inserted_id
     return redirect(url_for('courses_show', course_id = course_id))
@@ -50,7 +53,9 @@ def courses_update(course_id):
         'subject': request.form.get("course_subject"),
         'code': request.form.get("course_code"),
         'title': request.form.get("course_title"),
-        'description': request.form.get("course_description")
+        'description': request.form.get("course_description"), 
+        'credits': request.form.get("course_credits"),
+        'term': request.form.get("course_term")
     }
     courses.update_one(
         {'_id': ObjectId(course_id)},
@@ -80,7 +85,8 @@ def terms_submit():
     term = {
         'name': request.form.get("term_name"),
         'start_date': datetime.strptime(request.form.get("start_date"), '%Y-%m-%d'),
-        'end_date': datetime.strptime(request.form.get("end_date"), '%Y-%m-%d')
+        'end_date': datetime.strptime(request.form.get("end_date"), '%Y-%m-%d'),
+        'courses': []
     }
     term_id = terms.insert_one(term).inserted_id
     return redirect(url_for('terms_show', term_id = term_id))

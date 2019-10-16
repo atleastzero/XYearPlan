@@ -1,8 +1,10 @@
 <!-- templates/courses_show.html -->
 {% extends 'base.html' %} {% block content %}
 <a href="/">View all courses</a>
-<h1>{{course.subject}} {{course.code}}: {{course.title}}</h1>
-<p>{{course.description}}</p>
+<h1>{{ course.subject }} {{course.code}}: {{ course.title }}</h1>
+<p><strong>Description: </strong>{{ course.description }}</p>
+<p><strong>Term: </strong>{{ course.term }}</p>
+<p><strong>Credits: </strong>{{ course.credits }}</p>
 <p><a href='/terms/courses/{{ course._id }}/edit'>Edit Course</a></p>
 <p>
     <form method='POST' action='/terms/courses/{{ course._id }}/delete'>
