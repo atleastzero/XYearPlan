@@ -41,7 +41,7 @@ def courses_show(course_id):
     course = courses.find_one({'_id': ObjectId(course_id)})
     return render_template('courses_show.html', course = course)
 
-@app.route('/courses/<course_id>', methods=['POST'])
+@app.route('/terms/courses/<course_id>', methods=['POST'])
 def courses_update(course_id):
     """Submit an edited course."""
     updated_course = {
@@ -88,6 +88,25 @@ def terms_show(term_id):
     """Show a single term."""
     term = terms.find_one({'_id': ObjectId(term_id)})
     return render_template('terms_show.html', term = term)
+
+@app.route('/terms/<term_id>', methods=['POST'])
+def terms_update(term_id):
+    """Submit an edited term."""
+    updated_term = {
+        'name': request.form.get("term_name"),
+        'start_date': datetime.strptime(request.form.get("start_date"), '%Y-%m-%d'),
+        'end_date': datetime.strptime(request.form.get("end_date"), '%Y-%m-%d')
+    }
+    terms.update_one(
+        {'_id': ObjectId(term_id)},
+        {'$set': updated_term})
+    return redirect(url_for('terms_show', term_id = term_id))
+
+@app.route("/terms/<term_id>/edit")
+def terms_edit(term_id):
+    """Show the edit form for a term."""
+    term = terms.find_one({'_id': ObjectId(term_id)})
+    return render_template("terms_edit.html", term = term)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=os.environ.get('PORT', 5000))

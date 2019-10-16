@@ -3,4 +3,5 @@
 <a href="/">View all terms</a>
 <h1>{{term.name}}</h1>
 <h2>{{term.start_date.strftime("%b %d %Y")}} - {{term.end_date.strftime("%b %d %Y")}}</h2>
+<p><a href='/terms/{{ term._id }}/edit'>Edit Term</a></p>
 {% endblock %}
