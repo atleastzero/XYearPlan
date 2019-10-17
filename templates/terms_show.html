@@ -3,6 +3,14 @@
 <a href="/">View all terms</a>
 <h1>{{term.name}}</h1>
 <h2>{{term.start_date.strftime("%b %d %Y")}} - {{term.end_date.strftime("%b %d %Y")}}</h2>
+<ul>
+    {% for i in range(number) %}
+    <li>
+        <a href='/terms/courses/{{ course_ids[i] }}'><strong> {{ term_courses[i].subject }} {{ term_courses[i].code }}</strong>: {{ term_courses[i].title }}</a>
+    </li>
+    {% endfor %}
+</ul>
+
 <p><a href='/terms/{{ term._id }}/edit'>Edit Term</a></p>
 <p>
     <form method='POST' action='/terms/{{ term._id }}/delete'>
@@ -11,3 +19,4 @@
     </form>
 </p>
 {% endblock %}
+<!--{{ course.subject }} {{ course.code }}</strong>: {{ course.title }} -->

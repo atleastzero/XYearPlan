@@ -29,37 +29,56 @@ def courses_new():
 @app.route("/terms/courses", methods=["POST"])
 def courses_submit():
     """Submit a new course."""
+    term = request.form.get("course_term")
     course = { 
         'subject': request.form.get("course_subject"),
         'code': request.form.get("course_code"),
         'title': request.form.get("course_title"),
         'description': request.form.get("course_description"), 
         'credits': request.form.get("course_credits"),
-        'term': request.form.get("course_term")
+        'term': term
     }
     course_id = courses.insert_one(course).inserted_id
+
+    if term != "Unassigned":
+        term_id = terms.find({'name': term})[0]['_id']
+        terms.update(
+            {"_id": term_id}, 
+            {"$push": {'courses': ObjectId(course_id)}})
+
     return redirect(url_for('courses_show', course_id = course_id))
     
 @app.route("/terms/courses/<course_id>")
 def courses_show(course_id):
     """Show a single course."""
     course = courses.find_one({'_id': ObjectId(course_id)})
-    return render_template('courses_show.html', course = course)
+    if course['term'] != "Unassigned":
+        term_id = terms.find({'name': course['term']})[0]['_id']
+    return render_template('courses_show.html', course = course, term_id = term_id)
 
 @app.route('/terms/courses/<course_id>', methods=['POST'])
 def courses_update(course_id):
     """Submit an edited course."""
+
+    term = request.form.get("course_term")
     updated_course = {
         'subject': request.form.get("course_subject"),
         'code': request.form.get("course_code"),
         'title': request.form.get("course_title"),
         'description': request.form.get("course_description"), 
         'credits': request.form.get("course_credits"),
-        'term': request.form.get("course_term")
+        'term': term
     }
     courses.update_one(
         {'_id': ObjectId(course_id)},
         {'$set': updated_course})
+
+    if term != "Unassigned":
+        term_id = terms.find({'name': term})[0]['_id']
+        terms.update(
+            {"_id": term_id}, 
+            {"$push": {'courses': {ObjectId(course_id)}}})
+
     return redirect(url_for('courses_show', course_id = course_id))
 
 @app.route("/terms/courses/<course_id>/edit")
@@ -95,7 +114,12 @@ def terms_submit():
 def terms_show(term_id):
     """Show a single term."""
     term = terms.find_one({'_id': ObjectId(term_id)})
-    return render_template('terms_show.html', term = term)
+    term_courses = []
+    for course in term['courses']:
+        term_courses.append(courses.find_one({'_id': course}))
+    return render_template('terms_show.html', term = term, 
+            course_ids = term['courses'], term_courses = term_courses, 
+            number = len(term_courses))
 
 @app.route('/terms/<term_id>', methods=['POST'])
 def terms_update(term_id):

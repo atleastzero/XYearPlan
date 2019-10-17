@@ -3,7 +3,7 @@
 <a href="/">View all courses</a>
 <h1>{{ course.subject }} {{course.code}}: {{ course.title }}</h1>
 <p><strong>Description: </strong>{{ course.description }}</p>
-<p><strong>Term: </strong>{{ course.term }}</p>
+<p><strong>Term: </strong><a href="/terms/{{ term_id }}">{{ course.term }}</a></p>
 <p><strong>Credits: </strong>{{ course.credits }}</p>
 <p><a href='/terms/courses/{{ course._id }}/edit'>Edit Course</a></p>
 <p>
