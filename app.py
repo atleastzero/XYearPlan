@@ -52,6 +52,7 @@ def courses_submit():
 def courses_show(course_id):
     """Show a single course."""
     course = courses.find_one({'_id': ObjectId(course_id)})
+    term_id = "Unassigned"
     if course['term'] != "Unassigned":
         term_id = terms.find({'name': course['term']})[0]['_id']
     return render_template('courses_show.html', course = course, term_id = term_id)
